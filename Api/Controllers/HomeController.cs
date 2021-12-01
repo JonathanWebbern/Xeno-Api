@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Web.Mvc;
 
 namespace Api.Controllers
@@ -11,7 +9,7 @@ namespace Api.Controllers
         public HomeController()
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new System.Uri("https://xeno-api.azurewebsites.net/api/");
+            httpClient.BaseAddress = new System.Uri("https://localhost:44372/api/");
         }
 
         [HttpGet]
