@@ -1,0 +1,70 @@
+@using System.Web.Http
+@using System.Web.Http.Controllers
+@using System.Web.Http.Description
+@using System.Collections.ObjectModel
+@using Api.Areas.HelpPage.Models
+@model Collection<ApiDescription>
+@{
+    // Group APIs by controller
+    ILookup<HttpControllerDescriptor, ApiDescription> apiGroups = Model.ToLookup(api => api.ActionDescriptor.ControllerDescriptor);
+}
+<link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />
+<div id="main-inner">
+    <section class="featured">
+        <div class="content-wrapper">
+            <ul id="chapters-ul">
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#response-structure">Response Structure</a></li>
+                <li>
+                    <a href="#endpoints">Endpoints</a>
+                    <ul>
+                        <li><a href="#Spacecraft">Spacecraft</a></li>
+                        <li><a href="#Films">Films</a></li>
+                        <li><a href="#Aliens">Aliens</a></li>
+                        <li><a href="#Species">Species</a></li>
+                        <li><a href="#Planets">Planets</a></li>
+                        <li><a href="#People">People</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="content-wrapper">
+            <h2 id="introduction">Introduction</h2>
+            <p>
+                In cyber space know one can hear you scream!! The Xeno-Api is a public RESTful API providing information on the Alien
+                film franchise. Currently containing information related to Alien (the first film) only but with a view to add information on the entire franchise.
+            </p>
+            <h2 id="response-structure">Response Structure</h2>
+            <p>
+                Responses are wrapped inside JSON objects which provides aditional information on the result.
+                The main body of the data requested is held inside the "Data" property, in the event of a failed request such as a 404
+                the contents of the "Data" property will be null.
+            </p>
+            <p>
+                Example of a successful request response:
+            </p>
+            <pre id="success-pre" class="json-viewer"></pre>
+            <p>
+                Example of a failed request response:
+            </p>
+            <pre id="failed-pre" class="json-viewer"></pre>
+        </div>
+    </section>
+    <section class="content-wrapper main-content clear-fix">
+        <h2 id="endpoints">Endpoints</h2>
+        <p>
+            All requests must be prefixed with the base url: <strong>https://xeno-api.azurewebsites.net</strong>
+        </p>
+        @foreach (var group in apiGroups)
+        {
+            @Html.DisplayFor(m => group, "ApiGroup")
+        }
+    </section>
+    <a href="#nav-inner">Back to top</a>
+</div>
+<script>
+    window.addEventListener('load', function () {
+        init_ApiPage(@Html.Raw(Json.Encode(ViewBag.ResponseStructureSuccess)),
+            @Html.Raw(Json.Encode(ViewBag.ResponseStructureFailed)));
+    });
+</script>

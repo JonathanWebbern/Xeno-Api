@@ -1,0 +1,41 @@
+﻿<div id="main-inner">
+    <div class="documentation-header">
+        <h3 class="h-font-weight">Inculding everything from characters and planets to alien species!</h3>
+        <h1 class="h-font-weight">Try it out!</h1>
+    </div>
+    <form id="search-form" method="post">
+        <div id="search-inner">
+            <label>https://xeno-api.azurewebsites.net/api/</label>
+            <input id="searchInput" type="text" name="searchInput" value="@ViewBag.Url" />
+            <button type="submit">Submit</button>
+        </div>
+        <p id="example-text">
+            Examples: <button type="submit" onclick="setUrlBar('aliens/1')" class="button-link">aliens/1</button>,
+            <button type="submit" onclick="setUrlBar('planets/2')" class="button-link">planets/2</button>,
+            <button type="submit" onclick="setUrlBar('spacecraft/1')" class="button-link">spacecraft/1</button>
+        </p>
+    </form>
+    <h2 id="response-title" class="h-font-weight">Resource for @ViewBag.Url</h2>
+    <pre id="main-pre" class="json-viewer"></pre>
+    <div id="home-info-outer">
+        <div class="homne-info-inner">
+            <h3 class="h-font-weight">What is the Xeno-API?</h3>
+            <p>
+                A RESTful API serving information on the Alien film franchise.
+                With information on everything from characters, films, planets, spacecraft and species to Alien types.
+            </p>
+        </div>
+        <div class="homne-info-inner">
+            <h3 class="h-font-weight">How do i use the Xeno-API?</h3>
+            <p>
+                Xeno-api provides a set on endpoints that are used to fetch data.
+                Check out the @Html.ActionLink("documentation", "Index", "Help") to learn how to the Xeno-API.
+            </p>
+        </div>
+    </div>
+</div>
+<script>
+    window.addEventListener('load', function () {
+        init_Index(@Html.Raw(Json.Encode(ViewBag.ApiResult)))
+    });
+</script>

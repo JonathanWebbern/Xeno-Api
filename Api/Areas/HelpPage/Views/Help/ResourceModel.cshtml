@@ -1,0 +1,12 @@
+@using System.Web.Http
+@using Api.Areas.HelpPage.ModelDescriptions
+@model ModelDescription
+<link type="text/css" href="~/Areas/HelpPage/HelpPage.css" rel="stylesheet" />
+<div id="main-inner">
+    <a class="back-a" href="@ViewBag.ReturnUrl">Back a page</a>
+    <h1>@Model.Name</h1>
+    <p>@Model.Documentation</p>
+    <section class="content-wrapper main-content clear-fix">
+        @Html.DisplayFor(m => Model)
+    </section>
+</div>
