@@ -3,8 +3,8 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-privateSettings.config
-connString.config
+Api/privateSettings.config
+Api/connString.config
 
 
 # User-specific files
