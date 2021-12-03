@@ -9,7 +9,7 @@ namespace Api.Controllers
         public HomeController()
         {
             httpClient = new HttpClient();
-            httpClient.BaseAddress = new System.Uri("https://localhost:44372/api/");
+            httpClient.BaseAddress = new System.Uri("http://xeno-api.azurewebsites.net/api/");
         }
 
         [HttpGet]
