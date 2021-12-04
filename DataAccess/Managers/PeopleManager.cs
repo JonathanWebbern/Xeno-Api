@@ -1,6 +1,8 @@
 ﻿using DataAccess.Models;
+using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace DataAccess.Managers
 {
@@ -21,7 +23,7 @@ namespace DataAccess.Managers
         /// <returns>A list of PeopleModels.</returns>
         public List<PeopleModel> GetPeople()
         {
-            return dbClient.LoadCollection<PeopleModel>("people");
+            return dbClient.LoadCollection<PeopleModel>("people", 5, 1);
         }
 
         /// <summary>

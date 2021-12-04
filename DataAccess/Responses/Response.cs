@@ -5,6 +5,7 @@ namespace DataAccess.Responses
     /// <summary>
     /// Defines the structure of a generic Json response.
     /// </summary>
+    /// <typeparam name="T">A model e.g. AlienModel.</typeparam>
     public class Response<T>
     {
         public Response()

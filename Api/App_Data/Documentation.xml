@@ -631,6 +631,11 @@
       <param name="name">Name of the Species.</param>
       <returns>A SpeciesModel</returns>
     </member>
+    <member name="T:Api.Filters.PaginationFilter">
+      <summary>
+            Defines a filter used in pagination.
+            </summary>
+    </member>
   </members>
   <assembly>
     <name>DataAccess</name>
@@ -1326,7 +1331,7 @@
             Provides a set of generic methods for querying data from database.
             </summary>
     </member>
-    <member name="M:DataAccess.MongoCRUD.LoadCollection``1(System.String)">
+    <member name="M:DataAccess.MongoCRUD.LoadCollection``1(System.String,System.Int32,System.Int32)">
       <summary>
             Loads a full collection.
             </summary>
@@ -1361,10 +1366,17 @@
       <param name="title">Title of a record.</param>
       <returns>A single model.</returns>
     </member>
+    <member name="T:DataAccess.Responses.PagedResponse`1">
+      <summary>
+            Defines the structure of a paginated generic Json response.
+            </summary>
+      <typeparam name="T">A model e.g. AlienModel.</typeparam>
+    </member>
     <member name="T:DataAccess.Responses.Response`1">
       <summary>
             Defines the structure of a generic Json response.
             </summary>
+      <typeparam name="T">A model e.g. AlienModel.</typeparam>
     </member>
   </members>
 </doc>

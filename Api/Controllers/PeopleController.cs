@@ -1,11 +1,15 @@
-﻿using DataAccess.Managers;
+﻿using Api.Filters;
+using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
+using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace Api.Controllers
 {

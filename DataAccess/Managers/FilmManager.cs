@@ -21,7 +21,7 @@ namespace DataAccess.Managers
         /// <returns>A list of FilmModels</returns>
         public List<FilmModel> GetFilms()
         {
-            return dbClient.LoadCollection<FilmModel>("films");
+            return dbClient.LoadCollection<FilmModel>("films", 5, 1);
         }
 
         /// <summary>

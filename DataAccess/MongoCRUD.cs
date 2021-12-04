@@ -26,10 +26,19 @@ namespace DataAccess
         /// <typeparam name="T">Model class e.g. AlienModel.</typeparam>
         /// <param name="table">Table name.</param>
         /// <returns>Collection of models.</returns>
-        public List<T> LoadCollection<T>(string table)
+        public List<T> LoadCollection<T>(string table, int pageSize, int page )
         {
             var collection = db.GetCollection<T>(table);
-            return collection.Find(new BsonDocument()).ToList();
+
+            var results = collection.Find(new BsonDocument())
+                .Sort(Builders<T>.Sort.Ascending("Id"))
+                .Skip((page - 1) * pageSize)
+                .Limit(pageSize)
+                .ToList();
+
+            return results;
+
+            //return collection.Find(new BsonDocument()).ToList();
 
         }
 

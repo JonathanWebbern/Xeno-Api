@@ -21,7 +21,7 @@ namespace DataAccess.Managers
         /// <returns>A list of SpeciesModels.</returns>
         public List<SpeciesModel> GetSpecies()
         {
-            return dbClient.LoadCollection<SpeciesModel>("species");
+            return dbClient.LoadCollection<SpeciesModel>("species", 5, 1);
         }
 
         /// <summary>

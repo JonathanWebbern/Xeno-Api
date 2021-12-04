@@ -21,7 +21,7 @@ namespace DataAccess.Managers
         /// <returns>A List of SpacecraftModels.</returns>
         public List<SpacecraftModel> GetSpacecraft()
         {
-            return dbClient.LoadCollection<SpacecraftModel>("spacecraft");
+            return dbClient.LoadCollection<SpacecraftModel>("spacecraft", 5, 1);
         }
 
         /// <summary>

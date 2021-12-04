@@ -21,7 +21,7 @@ namespace DataAccess.Managers
         /// <returns>A list of PlanetModels.</returns>
         public List<PlanetModel> GetPlanets()
         {
-            return dbClient.LoadCollection<PlanetModel>("planets");
+            return dbClient.LoadCollection<PlanetModel>("planets", 5, 1);
         }
 
         /// <summary>

@@ -21,7 +21,7 @@ namespace DataAccess.Managers
         /// <returns>A list of AlienModels.</returns>
         public List<AlienModel> GetAliens()
         {
-            return dbClient.LoadCollection<AlienModel>("aliens");
+            return dbClient.LoadCollection<AlienModel>("aliens", 5, 1);
         }
 
         /// <summary>
