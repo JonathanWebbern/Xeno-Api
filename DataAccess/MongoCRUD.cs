@@ -29,17 +29,12 @@ namespace DataAccess
         public List<T> LoadCollection<T>(string table, int pageSize, int page )
         {
             var collection = db.GetCollection<T>(table);
-
             var results = collection.Find(new BsonDocument())
                 .Sort(Builders<T>.Sort.Ascending("Id"))
                 .Skip((page - 1) * pageSize)
                 .Limit(pageSize)
                 .ToList();
-
             return results;
-
-            //return collection.Find(new BsonDocument()).ToList();
-
         }
 
         /// <summary>

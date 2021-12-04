@@ -4,6 +4,11 @@
         <name>DataAccess</name>
     </assembly>
     <members>
+        <member name="T:Api.Filters.PaginationFilter">
+            <summary>
+            Defines a filter used in pagination.
+            </summary>
+        </member>
         <member name="T:DataAccess.Managers.AlienManager">
             <summary>
             Manages calls to the Mongo database relating to Alien data. 
@@ -59,7 +64,7 @@
             Manages calls to the Mongo database relating to People data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.PeopleManager.GetPeople">
+        <member name="M:DataAccess.Managers.PeopleManager.GetPeople(Api.Filters.PaginationFilter)">
             <summary>
             Gets all People from collection.
             </summary>

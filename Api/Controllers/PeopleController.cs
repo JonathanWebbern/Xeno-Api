@@ -34,11 +34,15 @@ namespace Api.Controllers
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<PeopleModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var people = peopleManager.GetPeople();
-            _responses = new Response<List<PeopleModel>>(people);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var people = peopleManager.GetPeople(filtered);
+            //_responses = new Response<List<PeopleModel>>(people);
+
+            var response = new PagedResponse<List<PeopleModel>>(people, filter.PageNumber, filter.PageSize);
+
+            return Request.CreateResponse(HttpStatusCode.OK, response);
         }
 
         /// <summary>

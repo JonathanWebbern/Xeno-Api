@@ -277,7 +277,6 @@
     <Compile Include="Controllers\PlanetsController.cs" />
     <Compile Include="Controllers\SpacecraftController.cs" />
     <Compile Include="Controllers\SpeciesController.cs" />
-    <Compile Include="Filters\PaginationFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

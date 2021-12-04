@@ -536,7 +536,7 @@
             Contains Methods for fetching data related to People.
             </summary>
     </member>
-    <member name="M:Api.Controllers.PeopleController.Get">
+    <member name="M:Api.Controllers.PeopleController.Get(Api.Filters.PaginationFilter)">
       <summary>
             Gets a list of all People.
             </summary>
@@ -631,16 +631,16 @@
       <param name="name">Name of the Species.</param>
       <returns>A SpeciesModel</returns>
     </member>
-    <member name="T:Api.Filters.PaginationFilter">
-      <summary>
-            Defines a filter used in pagination.
-            </summary>
-    </member>
   </members>
   <assembly>
     <name>DataAccess</name>
   </assembly>
   <members>
+    <member name="T:Api.Filters.PaginationFilter">
+      <summary>
+            Defines a filter used in pagination.
+            </summary>
+    </member>
     <member name="T:DataAccess.Managers.AlienManager">
       <summary>
             Manages calls to the Mongo database relating to Alien data. 
@@ -696,7 +696,7 @@
             Manages calls to the Mongo database relating to People data. 
             </summary>
     </member>
-    <member name="M:DataAccess.Managers.PeopleManager.GetPeople">
+    <member name="M:DataAccess.Managers.PeopleManager.GetPeople(Api.Filters.PaginationFilter)">
       <summary>
             Gets all People from collection.
             </summary>

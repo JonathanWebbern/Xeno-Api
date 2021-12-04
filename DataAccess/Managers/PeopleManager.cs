@@ -1,8 +1,7 @@
-﻿using DataAccess.Models;
-using MongoDB.Driver;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 
 namespace DataAccess.Managers
 {
@@ -21,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all People from collection.
         /// </summary>
         /// <returns>A list of PeopleModels.</returns>
-        public List<PeopleModel> GetPeople()
+        public List<PeopleModel> GetPeople(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<PeopleModel>("people", 5, 1);
+            return dbClient.LoadCollection<PeopleModel>("people", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
