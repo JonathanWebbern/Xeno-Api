@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -19,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all Species from the collection.
         /// </summary>
         /// <returns>A list of SpeciesModels.</returns>
-        public List<SpeciesModel> GetSpecies()
+        public List<SpeciesModel> GetSpecies(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<SpeciesModel>("species", 5, 1);
+            return dbClient.LoadCollection<SpeciesModel>("species", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace DataAccess.Managers
         public SpeciesModel GetSpeciesByName(string name)
         {
             return dbClient.LoadDocument<SpeciesModel>("species", name);
+        }
+
+        /// <summary>
+        /// Gets count of all Species records.
+        /// </summary>
+        /// <returns>The count of all Species records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<SpeciesModel>("species");
+            return (int)count;
         }
     }
 }

@@ -6,8 +6,10 @@
 
 @{
     ApiDescription description = Model.ApiDescription;
+    var path = description.RelativePath.Split('?');
 }
-<h1>@description.HttpMethod.Method @description.RelativePath</h1>
+ 
+<h1>@description.HttpMethod.Method @path[0]</h1>
 <div>
 
     <p>@description.Documentation</p>

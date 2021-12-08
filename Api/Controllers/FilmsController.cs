@@ -1,6 +1,9 @@
-﻿using DataAccess.Managers;
+﻿using Api.Filters;
+using DataAccess.Helpers;
+using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using DataAccess.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,26 +19,29 @@ namespace Api.Controllers
     public class FilmsController : ApiController
     {
         private Response<FilmModel> _response;
-        private Response<List<FilmModel>> _responses;
-        private readonly FilmManager filmManager;
+        private readonly FilmManager _filmManager;
+        private readonly IUriService _uriService;
         public FilmsController()
         {
-            filmManager = new FilmManager();
+            _uriService = new UriService();
+            _filmManager = new FilmManager();
         }
 
         /// <summary>
         /// Gets a list of all Films.
         /// </summary>
         /// <returns>A list of Film Models.</returns>
-        /// 
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<FilmModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var films = filmManager.GetFilms();
-            _responses = new Response<List<FilmModel>>(films);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var films = _filmManager.GetFilms(filtered);
+            var docCount = _filmManager.GetCount();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<FilmModel>(films, docCount, filtered, _uriService, "api/films");
+            return Request.CreateResponse(HttpStatusCode.OK, pagedResponse);
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace Api.Controllers
         [ResponseType(typeof(FilmModel))]
         public HttpResponseMessage GetById(int id)
         {
-            var film = filmManager.GetFilm(id);
+            var film = _filmManager.GetFilm(id);
             if (film == null)
             {
                 _response = new Response<FilmModel>(film)
@@ -73,7 +79,7 @@ namespace Api.Controllers
         [ResponseType(typeof(FilmModel))]
         public HttpResponseMessage GetByName(string title)
         {
-            var film = filmManager.GetFilmByTitle(title);
+            var film = _filmManager.GetFilmByTitle(title);
             if (film == null)
             {
                 _response = new Response<FilmModel>(film)

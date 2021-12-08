@@ -5,7 +5,13 @@
     /// </summary>
     public class PaginationFilter
     {
+        /// <summary>
+        /// Page number requested. Defaults to one.
+        /// </summary>
         public int PageNumber { get; set; }
+        /// <summary>
+        /// The number of records per page. Defaults to maximum value ten.
+        /// </summary>
         public int PageSize { get; set; }
         public PaginationFilter()
         {

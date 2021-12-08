@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
 using Api.Areas.HelpPage.ModelDescriptions;
+using DataAccess.Models;
+using DataAccess.Responses;
 
 namespace Api.Areas.HelpPage.Models
 {

@@ -1,6 +1,9 @@
-﻿using DataAccess.Managers;
+﻿using Api.Filters;
+using DataAccess.Helpers;
+using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using DataAccess.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,11 +19,12 @@ namespace Api.Controllers
     public class SpacecraftController : ApiController
     {
         private Response<SpacecraftModel> _response;
-        private Response<List<SpacecraftModel>> _responses;
-        private readonly SpacecraftManager spacecraftManager;
+        private readonly SpacecraftManager _spacecraftManager;
+        private readonly IUriService _uriService;
         public SpacecraftController()
         {
-            spacecraftManager = new SpacecraftManager();
+            _uriService = new UriService();
+            _spacecraftManager = new SpacecraftManager();
         }
 
         /// <summary>
@@ -30,11 +34,14 @@ namespace Api.Controllers
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<SpacecraftModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var spacecraft = spacecraftManager.GetSpacecraft();
-            _responses = new Response<List<SpacecraftModel>>(spacecraft);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var spacecraft = _spacecraftManager.GetSpacecraft(filtered);
+            var docCount = _spacecraftManager.GetCount();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<SpacecraftModel>(spacecraft, docCount, filtered, _uriService, "api/spacecraft");
+            return Request.CreateResponse(HttpStatusCode.OK, pagedResponse);
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Api.Controllers
         [ResponseType(typeof(SpacecraftModel))]
         public HttpResponseMessage GetById(int id)
         {
-            var spacecraft = spacecraftManager.GetSpacecraft(id);
+            var spacecraft = _spacecraftManager.GetSpacecraft(id);
             if (spacecraft == null)
             {
                 _response = new Response<SpacecraftModel>(spacecraft)
@@ -72,7 +79,7 @@ namespace Api.Controllers
         [ResponseType(typeof(SpacecraftModel))]
         public HttpResponseMessage GetByName(string name)
         {
-            var spacecraft = spacecraftManager.GetSpacecraftByName(name);
+            var spacecraft = _spacecraftManager.GetSpacecraftByName(name);
             if (spacecraft == null)
             {
                 _response = new Response<SpacecraftModel>(spacecraft)

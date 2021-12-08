@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -19,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all Aliens from collection.
         /// </summary>
         /// <returns>A list of AlienModels.</returns>
-        public List<AlienModel> GetAliens()
+        public List<AlienModel> GetAliens(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<AlienModel>("aliens", 5, 1);
+            return dbClient.LoadCollection<AlienModel>("aliens", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace DataAccess.Managers
         public AlienModel GetAlienByName(string name)
         {
             return dbClient.LoadDocument<AlienModel>("aliens", name);
+        }
+
+        /// <summary>
+        /// Gets count of all Alien records.
+        /// </summary>
+        /// <returns>The count of all Alien records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<AlienModel>("aliens");
+            return (int)count;
         }
     }
 }

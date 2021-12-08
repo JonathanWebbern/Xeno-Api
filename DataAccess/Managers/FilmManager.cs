@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -19,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all Films from collection.
         /// </summary>
         /// <returns>A list of FilmModels</returns>
-        public List<FilmModel> GetFilms()
+        public List<FilmModel> GetFilms(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<FilmModel>("films", 5, 1);
+            return dbClient.LoadCollection<FilmModel>("films", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace DataAccess.Managers
         public FilmModel GetFilmByTitle(string title)
         {
             return dbClient.LoadDocumentByTitle<FilmModel>("films", title);
+        }
+
+        /// <summary>
+        /// Gets count of all Film records.
+        /// </summary>
+        /// <returns>The count of all Film records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<FilmModel>("films");
+            return (int)count;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -19,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all Spacecraft from collection.
         /// </summary>
         /// <returns>A List of SpacecraftModels.</returns>
-        public List<SpacecraftModel> GetSpacecraft()
+        public List<SpacecraftModel> GetSpacecraft(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<SpacecraftModel>("spacecraft", 5, 1);
+            return dbClient.LoadCollection<SpacecraftModel>("spacecraft", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace DataAccess.Managers
         public SpacecraftModel GetSpacecraftByName(string name)
         {
             return dbClient.LoadDocument<SpacecraftModel>("spacecraft", name);
+        }
+
+        /// <summary>
+        /// Gets count of all Spacecraft records.
+        /// </summary>
+        /// <returns>The count of all Spacecraft records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<SpacecraftModel>("spacecraft");
+            return (int)count;
         }
     }
 }

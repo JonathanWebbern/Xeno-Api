@@ -14,7 +14,13 @@
         <div class="content-wrapper">
             <ul id="chapters-ul">
                 <li><a href="#introduction">Introduction</a></li>
-                <li><a href="#response-structure">Response Structure</a></li>
+                <li>
+                    <a href="#response-structure">Response Structure</a>
+                    <ul>
+                        <li><a href="#standard-response">Standard</a></li>
+                        <li><a href="#paginated-response">Paginated</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="#endpoints">Endpoints</a>
                     <ul>
@@ -38,7 +44,13 @@
             <p>
                 Responses are wrapped inside JSON objects which provides aditional information on the result.
                 The main body of the data requested is held inside the "Data" property, in the event of a failed request such as a 404
-                the contents of the "Data" property will be null.
+                the contents of the "Data" property will be null.<br />
+                Depending on the type of endpoint called, the structure of the response can differ.
+            </p>
+            <h3 id="standard-response">Standard</h3>
+            <p>
+                A standard response is the most basic response and is used for endpoints that only yeild a single
+                record as a result. Such as requesting an Alien by its name or id.
             </p>
             <p>
                 Example of a successful request response:
@@ -48,6 +60,23 @@
                 Example of a failed request response:
             </p>
             <pre id="failed-pre" class="json-viewer"></pre>
+            <h3 id="paginated-response">Paginated</h3>
+            <p>
+                Paginated responses are used when calling endpoints that yeild a list of records as a result.
+                Such as requesting all people from the people collection.
+                <br />
+                Paginated results are set to a maximum of 10 records per response. Both the page size and number of 
+                the starting page can be modified using the following Url prameters:
+            </p>
+            <strong>api/people?pageNumber=1&amp;pageSize=2</strong>
+            <p>
+                Example of a successful paginated request response:
+            </p>
+            <pre id="paginated-success-pre" class="json-viewer"></pre>
+            <p>
+                Example of a failed paginated request response:
+            </p>
+            <pre id="paginated-failed-pre" class="json-viewer"></pre>
         </div>
     </section>
     <section class="content-wrapper main-content clear-fix">
@@ -65,6 +94,8 @@
 <script>
     window.addEventListener('load', function () {
         init_ApiPage(@Html.Raw(Json.Encode(ViewBag.ResponseStructureSuccess)),
-            @Html.Raw(Json.Encode(ViewBag.ResponseStructureFailed)));
+            @Html.Raw(Json.Encode(ViewBag.ResponseStructureFailed)),
+            @Html.Raw(Json.Encode(ViewBag.PagedResponseSuccess)),
+            @Html.Raw(Json.Encode(ViewBag.PagedResponseFailed)));
     });
 </script>

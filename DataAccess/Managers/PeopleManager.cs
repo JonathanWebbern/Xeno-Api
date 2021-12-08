@@ -44,5 +44,15 @@ namespace DataAccess.Managers
         {
             return dbClient.LoadDocument<PeopleModel>("people", name);
         }
+
+        /// <summary>
+        /// Gets count of all people records.
+        /// </summary>
+        /// <returns>The count of all People records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<PeopleModel>("people");
+            return (int)count;
+        }
     }
 }

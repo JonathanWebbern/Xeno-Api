@@ -78,5 +78,16 @@ namespace DataAccess
             var filter = Builders<T>.Filter.Eq("Title", title);
             return collection.Find(filter).FirstOrDefault();
         }
+
+        /// <summary>
+        /// Gets a count of the total documents in a collection.
+        /// </summary>
+        /// <typeparam name="T">A Model class e.g. AlienModel</typeparam>
+        /// <param name="table">Table name.</param>
+        /// <returns>64 Bit integer.</returns>
+        public long GetCount<T>(string table)
+        {
+            return db.GetCollection<T>(table).CountDocuments(new BsonDocument());
+        }
     }
 }

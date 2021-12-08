@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 
 namespace DataAccess.Responses
 {
@@ -11,12 +10,12 @@ namespace DataAccess.Responses
     {
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
-        public Uri FirstPage { get; set; }
-        public Uri LastPage { get; set; }
+        public string FirstPage { get; set; }
+        public string LastPage { get; set; }
         public int TotalPages { get; set; }
         public int TotalRecords { get; set; }
-        public Uri NextPage { get; set; }
-        public Uri PreviousPage { get; set; }
+        public string NextPage { get; set; }
+        public string PreviousPage { get; set; }
 
         public PagedResponse(T data, int pageNumber, int pageSize)
         {

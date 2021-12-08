@@ -1,6 +1,9 @@
-﻿using DataAccess.Managers;
+﻿using Api.Filters;
+using DataAccess.Helpers;
+using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using DataAccess.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,11 +19,12 @@ namespace Api.Controllers
     public class SpeciesController : ApiController
     {
         private Response<SpeciesModel> _response;
-        private Response<List<SpeciesModel>> _responses;
-        private readonly SpeciesManager speciesManager;
+        private readonly SpeciesManager _speciesManager;
+        private readonly IUriService _uriService;
         public SpeciesController()
         {
-            speciesManager = new SpeciesManager();
+            _uriService = new UriService();
+            _speciesManager = new SpeciesManager();
         }
 
         /// <summary>
@@ -30,11 +34,14 @@ namespace Api.Controllers
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<SpeciesModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var species = speciesManager.GetSpecies();
-            _responses = new Response<List<SpeciesModel>>(species);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var species = _speciesManager.GetSpecies(filtered);
+            var docCount = _speciesManager.GetCount();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<SpeciesModel>(species, docCount, filtered, _uriService, "api/species");
+            return Request.CreateResponse(HttpStatusCode.OK, pagedResponse);
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Api.Controllers
         [ResponseType(typeof(SpeciesModel))]
         public HttpResponseMessage Get(int id)
         {
-            var species = speciesManager.GetSpecies(id);
+            var species = _speciesManager.GetSpecies(id);
             if (species == null)
             {
                 _response = new Response<SpeciesModel>(species)
@@ -72,7 +79,7 @@ namespace Api.Controllers
         [ResponseType(typeof(SpeciesModel))]
         public HttpResponseMessage Get(string name)
         {
-            var species = speciesManager.GetSpeciesByName(name);
+            var species = _speciesManager.GetSpeciesByName(name);
             if (species == null)
             {
                 _response = new Response<SpeciesModel>(species)

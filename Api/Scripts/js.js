@@ -6,13 +6,15 @@ let tree;
 window.addEventListener('load', init_Burger());
 
 function init_Index(result) {
-    ;
     displayJson(result, "main-pre");
 }
 
-function init_ApiPage(jsonResultSuccess, jsonResultFailed) {
+function init_ApiPage(jsonResultSuccess, jsonResultFailed, pagedJsonSuccess, pagedJsonFailed) {
     displayJson(jsonResultSuccess, "success-pre");
     displayJson(jsonResultFailed, "failed-pre");
+    displayJson(pagedJsonSuccess, "paginated-success-pre");
+    displayJson(pagedJsonFailed, "paginated-failed-pre");
+    debugger;
 }
 
 function init_Burger() {

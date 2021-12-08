@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using Api.Areas.HelpPage.ModelDescriptions;
 using Api.Areas.HelpPage.Models;
+using Api.Filters;
+using DataAccess.Helpers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using DataAccess.Services;
 
 namespace Api.Areas.HelpPage.Controllers
 {
@@ -35,6 +39,17 @@ namespace Api.Areas.HelpPage.Controllers
             var sample = new Sample() { Id = 1, Name = "Jane Doe" };
             ViewBag.ResponseStructureSuccess = new Response<Sample>(sample);
             ViewBag.ResponseStructureFailed = new Response<Sample>(null)
+            {
+                Succeeded = false,
+                Message = "404: Resource not found",
+                StatusCode = HttpStatusCode.NotFound
+            };
+            var samples = new List<Sample>();
+            samples.Add(sample);
+            sample = new Sample() { Id = 2, Name = "Joe Bloggs" };
+            samples.Add(sample);
+            ViewBag.PagedResponseSuccess = PaginationHelper.CreatePagedResponse(samples, 8, new PaginationFilter() { PageNumber = 1, PageSize = 2 }, new UriService(), "api/people");
+            ViewBag.PagedResponseFailed = new PagedResponse<Sample>(null, 0, 0) 
             {
                 Succeeded = false,
                 Message = "404: Resource not found",

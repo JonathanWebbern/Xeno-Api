@@ -6,6 +6,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http.Description;
 using DataAccess.Responses;
+using DataAccess.Services;
+using Api.Filters;
+using DataAccess.Helpers;
 
 namespace Api.Controllers
 {
@@ -16,11 +19,12 @@ namespace Api.Controllers
     public class AliensController : ApiController
     {
         private Response<AlienModel> _response;
-        private Response<List<AlienModel>> _responses;
-        private readonly AlienManager alienManager;
+        private readonly AlienManager _alienManager;
+        private readonly IUriService _uriService;
         public AliensController()
         {
-            alienManager = new AlienManager();
+            _uriService = new UriService();
+            _alienManager = new AlienManager();
         }
 
         /// <summary>
@@ -30,11 +34,14 @@ namespace Api.Controllers
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<AlienModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var aliens = alienManager.GetAliens();
-            _responses = new Response<List<AlienModel>>(aliens);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var aliens = _alienManager.GetAliens(filtered);
+            var docCount = _alienManager.GetCount();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<AlienModel>(aliens, docCount, filtered, _uriService, "api/aliens");
+            return Request.CreateResponse(HttpStatusCode.OK, pagedResponse);
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Api.Controllers
         [ResponseType(typeof(AlienModel))]
         public HttpResponseMessage Get(int id)
         {
-            var alien = alienManager.GetAlien(id);
+            var alien = _alienManager.GetAlien(id);
             if (alien == null)
             {
                 _response = new Response<AlienModel>(alien)
@@ -72,7 +79,7 @@ namespace Api.Controllers
         [ResponseType(typeof(AlienModel))]
         public HttpResponseMessage Get(string name)
         {
-            var alien = alienManager.GetAlienByName(name);
+            var alien = _alienManager.GetAlienByName(name);
             if (alien == null)
             {
                 _response = new Response<AlienModel>(alien)

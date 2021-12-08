@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using Api.Filters;
+using DataAccess.Models;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -19,9 +20,9 @@ namespace DataAccess.Managers
         /// Gets all Planets from collection.
         /// </summary>
         /// <returns>A list of PlanetModels.</returns>
-        public List<PlanetModel> GetPlanets()
+        public List<PlanetModel> GetPlanets(PaginationFilter filter)
         {
-            return dbClient.LoadCollection<PlanetModel>("planets", 5, 1);
+            return dbClient.LoadCollection<PlanetModel>("planets", filter.PageSize, filter.PageNumber);
         }
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace DataAccess.Managers
         public PlanetModel GetPlanetByName(string name)
         {
             return dbClient.LoadDocument<PlanetModel>("planets", name);
+        }
+
+        /// <summary>
+        /// Gets count of all Planets records.
+        /// </summary>
+        /// <returns>The count of all Planets records.</returns>
+        public int GetCount()
+        {
+            var count = dbClient.GetCount<PlanetModel>("planets");
+            return (int)count;
         }
     }
 }

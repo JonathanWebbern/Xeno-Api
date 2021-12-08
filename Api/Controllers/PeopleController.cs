@@ -1,8 +1,9 @@
 ﻿using Api.Filters;
+using DataAccess.Helpers;
 using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
-using Microsoft.AspNetCore.Mvc;
+using DataAccess.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -20,11 +21,12 @@ namespace Api.Controllers
     public class PeopleController : ApiController
     {
         private Response<PeopleModel> _response;
-        private Response<List<PeopleModel>> _responses;
-        private readonly PeopleManager peopleManager;
+        private readonly PeopleManager _peopleManager;
+        private readonly IUriService _uriService;
         public PeopleController()
         {
-            peopleManager = new PeopleManager();
+            _uriService = new UriService();
+            _peopleManager = new PeopleManager();
         }
 
         /// <summary>
@@ -36,13 +38,12 @@ namespace Api.Controllers
         [ResponseType(typeof(List<PeopleModel>))]
         public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var filtered = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var people = peopleManager.GetPeople(filtered);
-            //_responses = new Response<List<PeopleModel>>(people);
-
-            var response = new PagedResponse<List<PeopleModel>>(people, filter.PageNumber, filter.PageSize);
-
-            return Request.CreateResponse(HttpStatusCode.OK, response);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var people = _peopleManager.GetPeople(filtered);
+            var docCount = _peopleManager.GetCount();
+            var pagesResponse = PaginationHelper.CreatePagedResponse<PeopleModel>(people, docCount, filtered, _uriService, "api/people");
+            return Request.CreateResponse(HttpStatusCode.OK, pagesResponse);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Api.Controllers
         [ResponseType(typeof(PeopleModel))]
         public HttpResponseMessage GetById(int id)
         {
-            var person = peopleManager.GetPeople(id);
+            var person = _peopleManager.GetPeople(id);
             if (person == null)
             {
                 _response = new Response<PeopleModel>(person)
@@ -80,7 +81,7 @@ namespace Api.Controllers
         [ResponseType(typeof(PeopleModel))]
         public HttpResponseMessage GetByName(string name)
         {
-            var person = peopleManager.GetPeopleByName(name);
+            var person = _peopleManager.GetPeopleByName(name);
             if (person == null)
             {
                 _response = new Response<PeopleModel>(person)

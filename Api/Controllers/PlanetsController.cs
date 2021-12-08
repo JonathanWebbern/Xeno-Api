@@ -1,6 +1,9 @@
-﻿using DataAccess.Managers;
+﻿using Api.Filters;
+using DataAccess.Helpers;
+using DataAccess.Managers;
 using DataAccess.Models;
 using DataAccess.Responses;
+using DataAccess.Services;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -16,11 +19,12 @@ namespace Api.Controllers
     public class PlanetsController : ApiController
     {
         private Response<PlanetModel> _response;
-        private Response<List<PlanetModel>> _responses;
-        private readonly PlanetManager planetManager;
+        private readonly PlanetManager _planetManager;
+        private readonly IUriService _uriService;
         public PlanetsController()
         {
-            planetManager = new PlanetManager();
+            _uriService = new UriService();
+            _planetManager = new PlanetManager();
         }
 
         /// <summary>
@@ -30,11 +34,14 @@ namespace Api.Controllers
         [HttpGet]
         [Route("")]
         [ResponseType(typeof(List<PlanetModel>))]
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get([FromUri] PaginationFilter filter)
         {
-            var planets = planetManager.GetPlanets();
-            _responses = new Response<List<PlanetModel>>(planets);
-            return Request.CreateResponse(HttpStatusCode.OK, _responses);
+            var filtered = filter == null ? new PaginationFilter() :
+                new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var planets = _planetManager.GetPlanets(filtered);
+            var docCount = _planetManager.GetCount();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<PlanetModel>(planets, docCount, filtered, _uriService, "api/planets");
+            return Request.CreateResponse(HttpStatusCode.OK, pagedResponse);
         }
 
         /// <summary>
@@ -47,7 +54,7 @@ namespace Api.Controllers
         [ResponseType(typeof(PlanetModel))]
         public HttpResponseMessage Get(int id)
         {
-            var planet = planetManager.GetPlanet(id);
+            var planet = _planetManager.GetPlanet(id);
             if (planet == null)
             {
                 _response = new Response<PlanetModel>(planet)
@@ -72,7 +79,7 @@ namespace Api.Controllers
         [ResponseType(typeof(PlanetModel))]
         public HttpResponseMessage GetByName(string name)
         {
-            var planet = planetManager.GetPlanetByName(name);
+            var planet = _planetManager.GetPlanetByName(name);
             if (planet == null)
             {
                 _response = new Response<PlanetModel>(planet)

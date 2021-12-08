@@ -9,12 +9,22 @@
             Defines a filter used in pagination.
             </summary>
         </member>
+        <member name="P:Api.Filters.PaginationFilter.PageNumber">
+            <summary>
+            Page number requested. Defaults to one.
+            </summary>
+        </member>
+        <member name="P:Api.Filters.PaginationFilter.PageSize">
+            <summary>
+            The number of records per page. Defaults to maximum value ten.
+            </summary>
+        </member>
         <member name="T:DataAccess.Managers.AlienManager">
             <summary>
             Manages calls to the Mongo database relating to Alien data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.AlienManager.GetAliens">
+        <member name="M:DataAccess.Managers.AlienManager.GetAliens(Api.Filters.PaginationFilter)">
             <summary>
             Gets all Aliens from collection.
             </summary>
@@ -34,12 +44,18 @@
             <param name="name">Name of the Alien.</param>
             <returns>An AlienModel.</returns>
         </member>
+        <member name="M:DataAccess.Managers.AlienManager.GetCount">
+            <summary>
+            Gets count of all Alien records.
+            </summary>
+            <returns>The count of all Alien records.</returns>
+        </member>
         <member name="T:DataAccess.Managers.FilmManager">
             <summary>
             Manages calls to the Mongo database relating to Film data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.FilmManager.GetFilms">
+        <member name="M:DataAccess.Managers.FilmManager.GetFilms(Api.Filters.PaginationFilter)">
             <summary>
             Gets all Films from collection.
             </summary>
@@ -58,6 +74,12 @@
             </summary>
             <param name="title">The title of the Film.</param>
             <returns>A FilmModel.</returns>
+        </member>
+        <member name="M:DataAccess.Managers.FilmManager.GetCount">
+            <summary>
+            Gets count of all Film records.
+            </summary>
+            <returns>The count of all Film records.</returns>
         </member>
         <member name="T:DataAccess.Managers.PeopleManager">
             <summary>
@@ -84,12 +106,18 @@
             <param name="name">The name of the Person.</param>
             <returns>A PeopleModel.</returns>
         </member>
+        <member name="M:DataAccess.Managers.PeopleManager.GetCount">
+            <summary>
+            Gets count of all people records.
+            </summary>
+            <returns>The count of all People records.</returns>
+        </member>
         <member name="T:DataAccess.Managers.PlanetManager">
             <summary>
             Manages calls to the Mongo database relating to Planet data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.PlanetManager.GetPlanets">
+        <member name="M:DataAccess.Managers.PlanetManager.GetPlanets(Api.Filters.PaginationFilter)">
             <summary>
             Gets all Planets from collection.
             </summary>
@@ -109,12 +137,18 @@
             <param name="name">name of the Planet.</param>
             <returns>A PlanetModel.</returns>
         </member>
+        <member name="M:DataAccess.Managers.PlanetManager.GetCount">
+            <summary>
+            Gets count of all Planets records.
+            </summary>
+            <returns>The count of all Planets records.</returns>
+        </member>
         <member name="T:DataAccess.Managers.SpacecraftManager">
             <summary>
             Manages calls to the Mongo database relating to Spacecraft data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.SpacecraftManager.GetSpacecraft">
+        <member name="M:DataAccess.Managers.SpacecraftManager.GetSpacecraft(Api.Filters.PaginationFilter)">
             <summary>
             Gets all Spacecraft from collection.
             </summary>
@@ -134,12 +168,18 @@
             <param name="name">Name of the Spacecraft.</param>
             <returns>A SpacecraftModel.</returns>
         </member>
+        <member name="M:DataAccess.Managers.SpacecraftManager.GetCount">
+            <summary>
+            Gets count of all Spacecraft records.
+            </summary>
+            <returns>The count of all Spacecraft records.</returns>
+        </member>
         <member name="T:DataAccess.Managers.SpeciesManager">
             <summary>
             Manages calls to the Mongo database relating to Species data. 
             </summary>
         </member>
-        <member name="M:DataAccess.Managers.SpeciesManager.GetSpecies">
+        <member name="M:DataAccess.Managers.SpeciesManager.GetSpecies(Api.Filters.PaginationFilter)">
             <summary>
             Gets all Species from the collection.
             </summary>
@@ -158,6 +198,12 @@
             </summary>
             <param name="name">The name of the Species.</param>
             <returns>A SpeciesModel.</returns>
+        </member>
+        <member name="M:DataAccess.Managers.SpeciesManager.GetCount">
+            <summary>
+            Gets count of all Species records.
+            </summary>
+            <returns>The count of all Species records.</returns>
         </member>
         <member name="T:DataAccess.Models.AlienModel">
             <summary>
@@ -733,6 +779,14 @@
             <param name="table">Table name.</param>
             <param name="title">Title of a record.</param>
             <returns>A single model.</returns>
+        </member>
+        <member name="M:DataAccess.MongoCRUD.GetCount``1(System.String)">
+            <summary>
+            Gets a count of the total documents in a collection.
+            </summary>
+            <typeparam name="T">A Model class e.g. AlienModel</typeparam>
+            <param name="table">Table name.</param>
+            <returns>64 Bit integer.</returns>
         </member>
         <member name="T:DataAccess.Responses.PagedResponse`1">
             <summary>
